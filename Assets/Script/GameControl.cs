@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.UI;
 using System;
@@ -17,7 +17,11 @@ public class GameControl : MonoBehaviour
     [SerializeField]
     private Transform priv_Handle_tran;
 
+    private int pub_MONEYTOTAL_int = 100;
+
     private int priv_PrizeValue_int;
+
+    private int priv_costToPlay_int = 10;
 
     private bool priv_HanndlePressed_bool;
 
@@ -25,16 +29,21 @@ public class GameControl : MonoBehaviour
 
     private bool priv_ResultsChecked_bool = false;
 
-    // Update is called once per frame
+    private bool priv_ButtonPressed_bool;
+
+
     void Update()
     {
+        Debug.Log(pub_MONEYTOTAL_int);
+        // set values if the rows are not moving 
         if (!priv_Rows[0].pub_RowStopped_bool || !priv_Rows[1].pub_RowStopped_bool || !priv_Rows[2].pub_RowStopped_bool)
         {
             priv_PrizeValue_int = 0;
             priv_PrizeText_text.enabled = false;
             priv_ResultsChecked_bool = false;
         }
-        //
+
+        // once the slots stop moving it checks for results and informes the player about the result
         if (priv_Rows[0].pub_RowStopped_bool && priv_Rows[1].pub_RowStopped_bool && priv_Rows[2].pub_RowStopped_bool && !priv_ResultsChecked_bool)
         {
             CheckResults();
@@ -44,30 +53,44 @@ public class GameControl : MonoBehaviour
             if (happyHour == true)
             {
                 // trigger HappyHour event
-                print("HappyHour started. Drink Up!");
+                print("Happy Hour started. Drink Up!");
             }
         }
     }
 
     private void OnMouseDown()
     {
-        if (priv_Rows[0].pub_RowStopped_bool && priv_Rows[1].pub_RowStopped_bool && priv_Rows[2].pub_RowStopped_bool) StartCoroutine("PullHandle");
+        if (priv_ButtonPressed_bool == false)
+        {
 
-        priv_HanndlePressed_bool = true;
+            priv_ButtonPressed_bool = true;
+            priv_PrizeText_text.enabled = false;
+            // collects money from player and starts the handle animation routine
+            if (pub_MONEYTOTAL_int >= priv_costToPlay_int)
+            {
+                if (priv_Rows[0].pub_RowStopped_bool && priv_Rows[1].pub_RowStopped_bool && priv_Rows[2].pub_RowStopped_bool)
+                {
 
-        /*
-        if (DrinkValues.pub_MONEYTOTAL_int > 10)
-        {            
-            DrinkValues.pub_MONEYTOTAL_int -= 10;
+                    StartCoroutine("PullHandle");
+
+                    priv_HanndlePressed_bool = true;
+                }
+
+                pub_MONEYTOTAL_int -= priv_costToPlay_int;
+            }
+            else
+            {
+                priv_PrizeText_text.enabled = true;
+                priv_PrizeText_text.text = "\n Not enough gold!";
+            }
+
+            /*
+            if (priv_Rows[0].pub_RowStopped_bool && priv_Rows[1].pub_RowStopped_bool && priv_Rows[2].pub_RowStopped_bool) StartCoroutine("PullHandle");
+            priv_HanndlePressed_bool = true;
+             */
         }
-        */
-
-        /*
-        if (priv_Rows[0].pub_RowStopped_bool && priv_Rows[1].pub_RowStopped_bool && priv_Rows[2].pub_RowStopped_bool) StartCoroutine("PullHandle");
-        priv_HanndlePressed_bool = true;
-         */
     }
-    
+
     private IEnumerator PullHandle()
     {
         for (int i = 0; i < 15; i += 5)
@@ -85,8 +108,10 @@ public class GameControl : MonoBehaviour
         }
     }
 
+    // set the prize for matching slots
     private void CheckResults()
     {
+
         if (priv_HanndlePressed_bool == true)
         {
             if (priv_Rows[0].pub_StoppedSlot_str == "Diamond" && priv_Rows[1].pub_StoppedSlot_str == "Diamond" && priv_Rows[2].pub_StoppedSlot_str == "Diamond")
@@ -102,57 +127,38 @@ public class GameControl : MonoBehaviour
                 priv_PrizeValue_int = 800;
 
             else if (priv_Rows[0].pub_StoppedSlot_str == "Seven" && priv_Rows[1].pub_StoppedSlot_str == "Seven" && priv_Rows[2].pub_StoppedSlot_str == "Seven")
-                priv_PrizeValue_int = 1500;
+                priv_PrizeValue_int = 1000;
 
             else if (priv_Rows[0].pub_StoppedSlot_str == "Cherry" && priv_Rows[1].pub_StoppedSlot_str == "Cherry" && priv_Rows[2].pub_StoppedSlot_str == "Cherry")
-                priv_PrizeValue_int = 3000;
+                priv_PrizeValue_int = 1250;
 
             else if (priv_Rows[0].pub_StoppedSlot_str == "Lemon" && priv_Rows[1].pub_StoppedSlot_str == "Lemon" && priv_Rows[2].pub_StoppedSlot_str == "Lemon")
-                priv_PrizeValue_int = 4000;
-
-            else if (priv_Rows[0].pub_StoppedSlot_str == "Crown" && priv_Rows[1].pub_StoppedSlot_str == "Crown" && priv_Rows[2].pub_StoppedSlot_str == "Crown")
-                priv_PrizeValue_int = 400;
-
-            else if (priv_Rows[0].pub_StoppedSlot_str == "Melon" && priv_Rows[1].pub_StoppedSlot_str == "Melon" && priv_Rows[2].pub_StoppedSlot_str == "Melon")
-                priv_PrizeValue_int = 600;
-
-            else if (priv_Rows[0].pub_StoppedSlot_str == "Bar" && priv_Rows[1].pub_StoppedSlot_str == "Bar" && priv_Rows[2].pub_StoppedSlot_str == "Bar")
-                priv_PrizeValue_int = 800;
-
-            else if (priv_Rows[0].pub_StoppedSlot_str == "Seven" && priv_Rows[1].pub_StoppedSlot_str == "Seven" && priv_Rows[2].pub_StoppedSlot_str == "Seven")
                 priv_PrizeValue_int = 1500;
 
-            else if (priv_Rows[0].pub_StoppedSlot_str == "Cherry" && priv_Rows[1].pub_StoppedSlot_str == "Cherry" && priv_Rows[2].pub_StoppedSlot_str == "Cherry")
-                priv_PrizeValue_int = 3000;
-
-            else if (priv_Rows[0].pub_StoppedSlot_str == "Lemon" && priv_Rows[1].pub_StoppedSlot_str == "Lemon" && priv_Rows[2].pub_StoppedSlot_str == "Lemon")
-                priv_PrizeValue_int = 4000;
-
-            else if (priv_Rows[0].transform.position.y == priv_Rows[1].transform.position.y &&
-                priv_Rows[0].transform.position.y == priv_Rows[2].transform.position.y)
-            {
-                happyHour = true;
-            }
 
             else if (priv_Rows[0].transform.position.y == priv_Rows[1].transform.position.y ||
                 priv_Rows[0].transform.position.y == priv_Rows[2].transform.position.y ||
                 priv_Rows[1].transform.position.y == priv_Rows[2].transform.position.y)
             {
-                // half win
-                priv_PrizeValue_int = 100;
+                // 2 of 3 slots match win
+
+                priv_PrizeValue_int = 20;
             }
 
+            if (priv_Rows[0].transform.position.y == priv_Rows[1].transform.position.y &&
+               priv_Rows[0].transform.position.y == priv_Rows[2].transform.position.y)
+            {
+                happyHour = true;
+            }
+
+            // pay the player 
+            pub_MONEYTOTAL_int += priv_PrizeValue_int;
+
             priv_HanndlePressed_bool = false;
-        }        
-      
+        }
+
         priv_ResultsChecked_bool = true;
-    }
-
-
-
-
-    //DrinkValues.pub_MONEYTOTAL_int += priv_PrizeValue_int;
-
-
+        priv_ButtonPressed_bool = false;
+    }     
 }
 

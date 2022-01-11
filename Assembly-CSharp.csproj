@@ -56,8 +56,7 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Script\Row.cs" />
-    <Compile Include="Assets\Script\GameControl.cs" />
+    <Compile Include="Assets\SlotMachine\Scripts\SlotMachineToogle.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -665,6 +664,10 @@
     <ProjectReference Include="Unity.Rider.Editor.csproj">
       <Project>{979F4A24-FD61-D9A3-53B1-2C08034D0E7F}</Project>
       <Name>Unity.Rider.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="SlotsScript.csproj">
+      <Project>{8C04D49C-C0CE-5DA3-0719-E27E73F8A29A}</Project>
+      <Name>SlotsScript</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

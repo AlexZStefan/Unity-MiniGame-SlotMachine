@@ -6,7 +6,7 @@ public class Row : MonoBehaviour
 {
     private int priv_RandomValue_int;
     private float priv_TimeInterval_f;
-
+  
     public bool pub_RowStopped_bool;
     public string pub_StoppedSlot_str;
 
@@ -35,7 +35,7 @@ public class Row : MonoBehaviour
         {
             if (transform.position.y <= -25f)
                 // 59 max -25 min - 12 / each slot
-                transform.position = new Vector2(transform.position.x, 59f);
+                transform.position = new Vector2( transform.position.x, 59f);
 
             transform.position = new Vector2(transform.position.x, transform.position.y - 2.0f);
 
@@ -68,7 +68,7 @@ public class Row : MonoBehaviour
         {
             // rotates slots 6 * 2f per i
             if (transform.position.y <= -25f)
-                transform.position = new Vector2(transform.position.x, 59f);
+                transform.position = new Vector2(transform.position.x, 59f );
 
             transform.position = new Vector2(transform.position.x, transform.position.y - 2f);
 
@@ -112,3 +112,4 @@ public class Row : MonoBehaviour
         GameControl.HandlePulled -= StartRotating;
     }
 }
+
